@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-card">
+  <div class="container">
     <div class="weather-icon">
       <img :src="weatherIcon" alt="Weather Icon" />
     </div>
@@ -23,7 +23,7 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.weather-card {
+.container {
   background-color: #c3e0fb;
   border-radius: 20px;
   padding: 20px;

@@ -1,36 +1,52 @@
 <template>
-  <div class="weather-card">
+  <div class="col container" :style="{ backgroundColor: bgColor }">
     <div class="weather-icon">
-      <!-- Icon placeholder; you'd replace this with your actual weather icon -->
-      <img src="#" alt="Weather Icon" />
+      <img :src="icon" alt="Weather Icon" />
     </div>
     <div class="weather-info">
       <div class="weather-day-condition">
-        <span class="weather-day">Today</span>
-        <span class="weather-condition">Frozen</span>
+        <p class="weather-day">{{ dayName }}</p>
+        <p class="weather-condition">{{ condition }}</p>
       </div>
-      <div class="weather-temperature">2°C</div>
+      <div class="weather-temperature">{{ temperature }}°C</div>
     </div>
   </div>
 </template>
 
-<script setup>
-// Script setup is a compile-time syntactic sugar feature
-// Here you would define your component's logic, props, state, etc.
+<script setup lang="ts">
+import { computed } from 'vue'
+import { checkDate, getTemperatureColor } from '@/utils/utils'
+
+const props = defineProps({
+  date: String,
+  icon: String,
+  condition: String,
+  temperature: Number
+})
+
+const dayName = computed(() => {
+  return props.date ? checkDate(props.date) : ''
+})
+
+const bgColor = computed(() => {
+  return props.temperature ? getTemperatureColor(props.temperature) : ''
+})
 </script>
 
 <style scoped>
-.weather-card {
-  background: #e0f7fa;
+.container {
+  display: flex;
+  flex-direction: column;
   border-radius: 20px;
   padding: 20px;
+  width: 144px;
+  margin-right: 10px;
   text-align: center;
   max-width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .weather-icon {
-  margin-bottom: 16px;
 }
 
 .weather-icon img {
@@ -46,7 +62,7 @@
 }
 
 .weather-day {
-  font-size: 1.2em;
+  font-size: 18px;
   font-weight: bold;
 }
 
@@ -60,3 +76,7 @@
   font-weight: bold;
 }
 </style>
+
+<!-- (forecast.forecastday[0].condition.icon)
+ (forecast.forecastday[0].condition.text)
+ (forecast.forecastday[0].maxtemp_c) -->

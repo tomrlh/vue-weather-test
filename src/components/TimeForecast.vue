@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-widget">
+  <div class="col container">
     <div class="weather-time">Now</div>
     <div class="weather-icon">
       <!-- Weather icon here (You can use an img tag or an icon library) -->
@@ -12,7 +12,7 @@
 <script setup lang="ts"></script>
 
 <style scoped>
-.weather-widget {
+.container {
   text-align: center;
   font-family: 'Arial', sans-serif;
 }
