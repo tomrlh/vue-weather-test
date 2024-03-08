@@ -10,7 +10,10 @@
         <div class="weather-condition">{{ condition }}</div>
       </div>
     </div>
-    <div class="weather-temperature">{{ temperature }}°C</div>
+
+    <div class="temperature-container">
+      <p class="temperature">{{ temperature }}°C</p>
+    </div>
   </div>
 </template>
 
@@ -40,16 +43,14 @@ const bgColor = computed(() => {
 <style scoped>
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   border-radius: 20px;
   padding: 20px;
-  width: 110px;
-  height: 200px !important;
-  margin-right: 10px;
+  height: 100px;
   text-align: center;
-  max-width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .weather-icon img {
@@ -58,36 +59,48 @@ const bgColor = computed(() => {
 
 .weather-information {
   display: flex;
-  flex-direction: column;
-  margin-top: -10px;
+  flex-direction: row;
+  align-items: center;
 }
 
 .weather-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 80px;
   font-family: 'Inter', 'Arial', sans-serif;
-}
-
-.weather-day-condition {
-  margin-bottom: 8px;
 }
 
 .weather-day {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .weather-condition {
   font-size: 14px;
   color: #607d8b;
-  margin-top: 0;
+  margin: 0;
 }
 
 .weather-temperature {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-self: center;
   font-size: 22px;
   font-weight: bold;
-  margin-bottom: -10px;
+}
+
+.temperature-container {
+  display: flex;
+}
+
+.temperature {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 1.5em;
+  margin: 15px 0;
 }
 </style>

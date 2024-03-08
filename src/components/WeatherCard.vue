@@ -25,10 +25,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, computed, defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
+import { useWindowState } from '@/composables/useWindowState'
 import { getTemperatureColor, darkenColor } from '@/utils/utils'
 
-const isMobileView = ref(window.innerWidth <= 998)
+const { isMobileView } = useWindowState()
 
 const props = defineProps({
   location: String,
@@ -39,18 +40,6 @@ const props = defineProps({
 
 const bgColor = computed(() => {
   return props.temperature ? getTemperatureColor(props.temperature) : ''
-})
-
-const updateViewType = () => {
-  isMobileView.value = window.innerWidth <= 998
-}
-
-onMounted(() => {
-  window.addEventListener('resize', updateViewType)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updateViewType)
 })
 </script>
 
@@ -71,12 +60,21 @@ onUnmounted(() => {
   display: flex;
 }
 
+.informations {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 998px) {
   .weather-container {
     flex-direction: row;
   }
   .temperature-container {
     display: flex;
+  }
+  .informations {
+    display: flex;
+    flex-direction: row;
   }
 }
 
@@ -90,6 +88,7 @@ onUnmounted(() => {
     justify-content: space-between;
   }
   .informations {
+    display: flex;
     flex-direction: column;
   }
   .description-container {

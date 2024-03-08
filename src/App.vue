@@ -50,6 +50,17 @@
         </div>
       </div>
 
+      <div class="grid">
+        <template v-for="item in forecastDays" :key="item.date_epoch">
+          <DayForecast
+            :date="item.date"
+            :icon="item.day.condition.icon"
+            :condition="item.day.condition.text"
+            :temperature="item.day.maxtemp_c"
+          />
+        </template>
+      </div>
+
       <LoaderCircle :loading="loading" v-if="loading" />
     </div>
   </div>
