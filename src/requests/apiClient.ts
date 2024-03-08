@@ -30,7 +30,3 @@ export const cityWeekWeather = async (city: string): Promise<WeatherData | undef
     console.error(error)
   }
 }
-
-// http://api.weatherapi.com/v1/current.json?key=17a0ea6d3af24151a23170312240403&q=London
-
-// http://api.weatherapi.com/v1/forecast.json?key=17a0ea6d3af24151a23170312240403&q=07112&days=7

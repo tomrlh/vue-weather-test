@@ -20,14 +20,12 @@
 
       <div class="grid" v-if="!loading">
         <div class="col grid-equalHeight">
-          <div class="col-3">
-            <WeatherCard
-              :location="location"
-              :condition="currentWeather?.condition.text"
-              :temperature="currentWeather?.temp_c"
-              :icon="currentWeather?.condition.icon"
-            />
-          </div>
+          <WeatherCard
+            :location="location"
+            :condition="currentWeather?.condition.text"
+            :temperature="currentWeather?.temp_c"
+            :icon="currentWeather?.condition.icon"
+          />
           <div class="col grid-column-equalHeight">
             <div class="col align-items" v-if="weatherForNextHours">
               <template v-for="item in weatherForNextHours" :key="item.time">
