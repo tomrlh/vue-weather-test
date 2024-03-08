@@ -2,7 +2,7 @@ import type { WeatherData } from '@/types/WeatherData'
 import axios from 'axios'
 
 const API_KEY = '17a0ea6d3af24151a23170312240403'
-const BASE_URL = 'http://api.weatherapi.com/v1'
+const BASE_URL = 'https://api.weatherapi.com/v1'
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
