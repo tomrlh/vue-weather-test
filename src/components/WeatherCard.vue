@@ -1,30 +1,40 @@
 <template>
-  <div class="container">
-    <div class="weather-icon">
-      <img :src="weatherIcon" alt="Weather Icon" />
+  <div class="col container" :style="{ backgroundColor: bgColor }">
+    <div>
+      <img
+        class="weather-icon"
+        :src="icon"
+        alt="Weather Icon"
+        :style="{ backgroundColor: darkenColor(bgColor) }"
+      />
+      <p class="city-name">{{ location }}</p>
+      <p class="weather-description">{{ condition }}</p>
     </div>
-    <div class="weather-info">
-      <h1 class="city-name">{{ cityName }}</h1>
-      <p class="weather-description">{{ weatherDescription }}</p>
-      <p class="temperature">{{ temperature }}°C</p>
-    </div>
+    <p class="temperature">{{ temperature }}°C</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
+import { getTemperatureColor, darkenColor } from '@/utils/utils'
 
 const props = defineProps({
-  cityName: String,
-  weatherDescription: String,
+  location: String,
+  condition: String,
   temperature: Number,
-  weatherIcon: String
+  icon: String
+})
+
+const bgColor = computed(() => {
+  return props.temperature ? getTemperatureColor(props.temperature) : ''
 })
 </script>
 
 <style scoped>
 .container {
-  background-color: #c3e0fb;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   border-radius: 20px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -33,26 +43,25 @@ const props = defineProps({
 }
 
 .weather-icon {
-  background-color: white;
   border-radius: 50%;
   padding: 10px;
   width: 80px;
-  height: 80px;
-  margin: 0 auto 20px;
+  margin: 0 auto;
 }
 
-.weather-info .city-name {
-  margin: 0;
+.city-name {
+  font-size: 26px;
   font-weight: bold;
+  margin-bottom: 0px;
 }
 
-.weather-info .weather-description {
-  margin: 0;
-  color: #555;
+.weather-description {
+  margin-top: 0px;
 }
 
-.weather-info .temperature {
-  font-size: 2em;
+.temperature {
+  font-size: 4.5em;
   margin: 10px 0;
+  font-weight: bold;
 }
 </style>

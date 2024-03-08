@@ -3,37 +3,42 @@
     <div class="col-10" data-push-left="off-1">
       <Header />
 
-      <FixedCountries title="Denver" />
+      <SearchInput v-model="searchQuery" @input="fetchCityWeekWeather" />
 
       <div class="grid">
+        <div class="col-12 prefixed-countries">
+          <template v-for="item in prefixedCountries" :key="item.title">
+            <FixedCountries
+              :title="item.title"
+              :icon="item.icon"
+              :onActiveChange="updateLocation"
+              :selectedValue="searchQuery"
+            />
+          </template>
+        </div>
+      </div>
+
+      <div class="grid" v-if="!loading">
         <div class="col grid-equalHeight">
-          <div class="col-3" :style="{ border: '1px solid black' }">
+          <div class="col-3">
             <WeatherCard
-              cityName="Denver"
-              weatherDescription="Snowing"
-              :temperature="2"
-              weatherIcon="path-to-snow-icon.png"
+              :location="location"
+              :condition="currentWeather?.condition.text"
+              :temperature="currentWeather?.temp_c"
+              :icon="currentWeather?.condition.icon"
             />
           </div>
           <div class="col grid-column-equalHeight">
-            <div
-              class="col"
-              :style="{
-                border: '1px solid black',
-                display: 'flex'
-              }"
-            >
-              <TimeForecast /><TimeForecast /><TimeForecast /><TimeForecast /><TimeForecast />
+            <div class="col align-items" v-if="weatherForNextHours">
+              <template v-for="item in weatherForNextHours" :key="item.time">
+                <TimeForecast
+                  :time="item.time"
+                  :icon="item.condition.icon"
+                  :temperature="item.temp_c"
+                />
+              </template>
             </div>
-            <div
-              class="col"
-              :style="{
-                border: '1px solid black',
-                display: 'flex',
-                justifyContent: 'space-between'
-              }"
-              v-if="forecastDays"
-            >
+            <div class="col align-items" v-if="forecastDays">
               <template v-for="item in forecastDays" :key="item.date_epoch">
                 <DayForecast
                   :date="item.date"
@@ -46,6 +51,8 @@
           </div>
         </div>
       </div>
+
+      <LoaderCircle :loading="loading" v-if="loading" />
     </div>
   </div>
 </template>
@@ -57,29 +64,53 @@ import WeatherCard from '@/components/WeatherCard.vue'
 import TimeForecast from '@/components/TimeForecast.vue'
 import DayForecast from '@/components/DayForecast.vue'
 import { cityWeekWeather } from '@/requests/apiClient'
-import type { WeatherData, ForecastDay } from '@/types/WeatherData'
+import type { WeatherData, ForecastDay, HourlyForecast, CurrentWeather } from '@/types/WeatherData'
+import { getWeatherForNextHours } from '@/utils/utils'
+import { prefixedCountries } from '@/constants/prefixed-countries'
+import LoaderCircle from '@/components/LoaderCircle.vue'
+import SearchInput from '@/components/SearchInput.vue'
 
 const weatherData = ref<WeatherData | undefined>()
+const location = ref<string | undefined>()
+const currentWeather = ref<CurrentWeather | undefined>()
 const forecastDays = ref<ForecastDay[] | undefined>()
+const weatherForNextHours = ref<HourlyForecast[] | undefined>()
+const searchQuery = ref('Denver')
+const loading = ref(true)
 
 const fetchCityWeekWeather = async () => {
-  weatherData.value = await cityWeekWeather('Denver')
+  loading.value = true
+  weatherData.value = await cityWeekWeather(searchQuery.value)
   if (weatherData.value) {
     forecastDays.value = weatherData.value.forecast.forecastday
     forecastDays.value = forecastDays.value.slice(1, -1)
+
+    currentWeather.value = weatherData.value.current
+
+    const currentDay = forecastDays.value[0]
+    weatherForNextHours.value = getWeatherForNextHours(currentDay.hour)
+
+    location.value = weatherData.value.location.name
   }
+  loading.value = false
 }
 
-const show = () => {
-  if (weatherData.value) {
-    console.log(weatherData.value)
-  }
-  if (forecastDays.value) {
-    console.log(forecastDays.value)
-  }
+const updateLocation = (name: string) => {
+  searchQuery.value = name
+  fetchCityWeekWeather()
 }
 
 onMounted(fetchCityWeekWeather)
 </script>
 
-<style scoped></style>
+<style scoped>
+.align-items {
+  display: flex;
+  justify-content: space-between;
+}
+
+.prefixed-countries {
+  display: flex;
+  flex-direction: row;
+}
+</style>

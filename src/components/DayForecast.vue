@@ -8,8 +8,8 @@
         <p class="weather-day">{{ dayName }}</p>
         <p class="weather-condition">{{ condition }}</p>
       </div>
-      <div class="weather-temperature">{{ temperature }}°C</div>
     </div>
+    <div class="weather-temperature">{{ temperature }}°C</div>
   </div>
 </template>
 
@@ -37,24 +37,23 @@ const bgColor = computed(() => {
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   border-radius: 20px;
   padding: 20px;
-  width: 144px;
+  height: 200px !important;
   margin-right: 10px;
   text-align: center;
   max-width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.weather-icon {
-}
-
 .weather-icon img {
-  width: 50px; /* Adjust the size as needed */
+  width: 50px;
 }
 
 .weather-info {
-  font-family: 'Arial', sans-serif;
+  height: 100px;
+  font-family: 'Inter', 'Arial', sans-serif;
 }
 
 .weather-day-condition {
@@ -64,19 +63,20 @@ const bgColor = computed(() => {
 .weather-day {
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 0px;
 }
 
 .weather-condition {
-  font-size: 1em;
+  font-size: 14px;
   color: #607d8b;
+  margin-top: 0px;
 }
 
 .weather-temperature {
-  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  font-size: 22px;
   font-weight: bold;
 }
 </style>
-
-<!-- (forecast.forecastday[0].condition.icon)
- (forecast.forecastday[0].condition.text)
- (forecast.forecastday[0].maxtemp_c) -->
