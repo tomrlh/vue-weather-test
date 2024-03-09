@@ -1,21 +1,24 @@
 <template>
-  <span :class="containerCSS" @click="handleActive">
-    <p :class="[{ city: !isActive }, { 'city-isA': isActive }]">{{ title }} {{ icon }}</p>
+  <span class="container" @click="handleActive">
+    <p :class="cityCSS">{{ title }} {{ icon }}</p>
   </span>
   <br />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, type PropType, computed } from 'vue'
+
+const active = ref(false)
 
 const props = defineProps({
   title: String,
   icon: String,
   selectedValue: String,
-  onActiveChange: Function
+  onActiveChange: Function as PropType<(name: string) => void>
 })
 
 const handleActive = () => {
+  active.value = !active.value
   if (props.onActiveChange && props.title) {
     props.onActiveChange(props.title)
   }
@@ -25,13 +28,10 @@ const isActive = computed(() => {
   return props.selectedValue == props.title
 })
 
-const containerCSS = computed(() => {
-  return {
-    container: true,
-    city: !isActive.value,
-    'city-active': isActive.value
-  }
-})
+const cityCSS = computed(() => ({
+  city: !isActive.value,
+  'city-active': isActive.value
+}))
 </script>
 
 <style scoped>
@@ -39,7 +39,6 @@ const containerCSS = computed(() => {
   display: flex;
   width: auto;
   margin-right: 5px;
-  height: 20px;
 }
 
 .city {

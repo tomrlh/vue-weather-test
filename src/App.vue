@@ -103,8 +103,8 @@ onMounted(fetchCityWeekWeather)
 
 <style scoped>
 .container {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .align-items {

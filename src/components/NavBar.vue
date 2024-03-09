@@ -10,14 +10,13 @@
     <div class="dropdown-container" v-if="isMobileView">
       <button class="dropdown-button" @click="toggleDropdown">☰</button>
       <div v-if="showDropdown" class="dropdown-menu">
-        <FixedCountries
-          v-for="item in prefixedCountries"
-          :key="item.title"
-          :title="item.title"
-          :icon="item.icon"
-          :onActiveChange="onSelectOption"
-          :selectedValue="modelValue"
-        />
+        <template v-for="item in prefixedCountries" :key="item.title">
+          <FixedCountries
+            :title="item.title"
+            :icon="item.icon"
+            :onActiveChange="onSelectOption"
+            :selectedValue="modelValue"
+        /></template>
       </div>
     </div>
   </div>
@@ -97,7 +96,6 @@ const onInput = (event: Event) => {
 
 .prefixed-countries {
   display: flex;
-  width: 100%;
 }
 
 .h-scroll {
