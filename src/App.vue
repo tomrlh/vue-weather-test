@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <div class="col-10" data-push-left="off-1">
+    <div class="col-12">
       <Header />
 
       <NavBar
@@ -30,12 +30,7 @@
               </div>
               <div class="col align-items" v-if="forecastDays && !isMobileView">
                 <template v-for="item in forecastDays" :key="item.date_epoch">
-                  <DayForecast
-                    :date="item.date"
-                    :icon="item.day.condition.icon"
-                    :condition="item.day.condition.text"
-                    :temperature="item.day.maxtemp_c"
-                  />
+                  <DayForecast :dayForecast="item" />
                 </template>
               </div>
             </div>
@@ -44,12 +39,7 @@
 
         <div class="grid" v-if="isMobileView">
           <template v-for="item in forecastDays" :key="item.date_epoch">
-            <MobileDayForecast
-              :date="item.date"
-              :icon="item.day.condition.icon"
-              :condition="item.day.condition.text"
-              :temperature="item.day.maxtemp_c"
-            />
+            <MobileDayForecast :dayForecast="item" />
           </template>
         </div>
       </div>
@@ -67,7 +57,7 @@ import DayForecast from '@/components/DayForecast.vue'
 import MobileDayForecast from '@/components/MobileDayForecast.vue'
 import { cityWeekWeather } from '@/requests/apiClient'
 import type { WeatherData, ForecastDay, HourlyForecast, CurrentWeather } from '@/types/WeatherData'
-import { getWeatherForNextHours } from '@/utils/utils'
+import { getWeatherForNextHours, parseIcon } from '@/utils/utils'
 import LoaderCircle from '@/components/LoaderCircle.vue'
 import NavBar from '@/components/NavBar.vue'
 import { useWindowState } from '@/composables/useWindowState'

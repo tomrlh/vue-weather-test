@@ -1,34 +1,30 @@
 <template>
   <div class="col container" :style="{ backgroundColor: bgColor }">
     <div class="weather-information">
-      <img class="weather-icon" :src="icon" alt="Weather Icon" />
+      <img class="weather-icon" :src="dayForecast.day.condition.icon" alt="Weather Icon" />
       <div class="weather-info">
         <div class="weather-day">{{ dayName }}</div>
-        <div class="weather-condition">{{ condition }}</div>
+        <div class="weather-condition">{{ dayForecast.day.condition.text }}</div>
       </div>
     </div>
-    <div class="weather-temperature">{{ temperature }}°C</div>
+    <div class="weather-temperature">{{ dayForecast.day.avgtemp_c }}°C</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { checkDate, getTemperatureColor } from '@/utils/utils'
+import type { ForecastDay } from '@/types/WeatherData'
 
 const props = defineProps({
-  date: String,
-  icon: String,
-  condition: String,
-  temperature: Number
+  dayForecast: {
+    type: Object as () => ForecastDay,
+    required: true
+  }
 })
 
-const dayName = computed(() => {
-  return props.date ? checkDate(props.date) : ''
-})
-
-const bgColor = computed(() => {
-  return props.temperature ? getTemperatureColor(props.temperature) : ''
-})
+const dayName = computed(() => checkDate(props.dayForecast.date))
+const bgColor = computed(() => getTemperatureColor(props.dayForecast.day.avgtemp_c))
 </script>
 
 <style scoped>
