@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['container', { 'col-12': isMobileView }, { col: !isMobileView }]"
-    :style="{ backgroundColor: bgColor }"
-  >
+  <div class="col container" :style="{ backgroundColor: bgColor }">
     <div class="weather-information">
       <img class="weather-icon" :src="icon" alt="Weather Icon" />
       <div class="weather-info">
@@ -17,9 +14,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { checkDate, getTemperatureColor } from '@/utils/utils'
-import { useWindowState } from '@/composables/useWindowState'
-
-const { isMobileView } = useWindowState()
 
 const props = defineProps({
   date: String,

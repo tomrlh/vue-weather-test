@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['container', { 'col-12': isMobileView }, { col: !isMobileView }]"
-    :style="{ backgroundColor: bgColor }"
-  >
+  <div :class="containerCSS" :style="{ backgroundColor: bgColor }">
     <div class="weather-information">
       <img class="weather-icon" :src="icon" alt="Weather Icon" />
       <div class="weather-info">
@@ -37,6 +34,14 @@ const dayName = computed(() => {
 
 const bgColor = computed(() => {
   return props.temperature ? getTemperatureColor(props.temperature) : ''
+})
+
+const containerCSS = computed(() => {
+  return {
+    container: true,
+    'col-12': isMobileView.value,
+    col: !isMobileView.value
+  }
 })
 </script>
 

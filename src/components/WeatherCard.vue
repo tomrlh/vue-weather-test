@@ -1,9 +1,6 @@
 <template>
-  <div :class="[{ 'col-3': !isMobileView }, { 'col-12': isMobileView }]">
-    <div
-      :class="['weather-container', { 'col-3': !isMobileView }, { 'col-12': isMobileView }]"
-      :style="{ backgroundColor: bgColor }"
-    >
+  <div :class="containerCSS">
+    <div :class="wContainerCSS" :style="{ backgroundColor: bgColor }">
       <div class="informations">
         <img
           class="weather-icon"
@@ -40,6 +37,22 @@ const props = defineProps({
 
 const bgColor = computed(() => {
   return props.temperature ? getTemperatureColor(props.temperature) : ''
+})
+
+const containerCSS = computed(() => {
+  return {
+    container: true,
+    'col-3': !isMobileView.value,
+    'col-12': isMobileView.value
+  }
+})
+
+const wContainerCSS = computed(() => {
+  return {
+    'weather-container': true,
+    'col-3': !isMobileView.value,
+    'col-12': isMobileView.value
+  }
 })
 </script>
 
