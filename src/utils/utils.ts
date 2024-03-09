@@ -168,10 +168,10 @@ export const getGreeting = (): string => {
   const hour = now.getHours()
 
   if (hour < 12) {
-    return 'Good morning'
+    return 'Good morning, Hamid 🌞'
   } else if (hour >= 12 && hour < 18) {
-    return 'Good afternoon'
+    return 'Good afternoon, Hamid ⛅'
   } else {
-    return 'Good night'
+    return 'Good night, Hamid 🌙'
   }
 }

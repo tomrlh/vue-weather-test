@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ getGreeting() }}, Hamid 🌞</h1>
+  <h1>{{ getGreeting() }}</h1>
 </template>
 
 <script setup lang="ts">
