@@ -30,7 +30,7 @@ const bgColor = computed(() => {
 <style scoped>
 .container {
   text-align: center;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
 }
 
 .weather-time {

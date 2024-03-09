@@ -5,7 +5,7 @@
       type="text"
       placeholder="Search city..."
       :value="modelValue"
-      @input="onInput"
+      @input="onInput($event)"
     />
   </div>
 </template>
@@ -17,10 +17,12 @@ const props = defineProps({
   fetchData: Function
 })
 
-const onInput = () => {
-  if (props.fetchData) {
-    props.fetchData()
-  }
+const emits = defineEmits(['update:modelValue', 'fetchData'])
+
+const onInput = (event: Event) => {
+  const inputElement = event.target as HTMLInputElement
+  emits('update:modelValue', inputElement.value)
+  emits('fetchData')
 }
 </script>
 

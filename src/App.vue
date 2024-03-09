@@ -6,7 +6,7 @@
       <SearchInput v-model="searchQuery" @input="fetchCityWeekWeather" />
 
       <div class="grid">
-        <div class="col-12 prefixed-countries">
+        <div v-if="!isMobileView" class="col-12 prefixed-countries h-scroll">
           <template v-for="item in prefixedCountries" :key="item.title">
             <FixedCountries
               :title="item.title"
@@ -16,9 +16,22 @@
             />
           </template>
         </div>
+        <div class="dropdown-container" v-else>
+          <button class="dropdown-button" @click="toggleDropdown">☰</button>
+          <div v-if="showDropdown" class="dropdown-menu">
+            <FixedCountries
+              v-for="item in prefixedCountries"
+              :key="item.title"
+              :title="item.title"
+              :icon="item.icon"
+              :onActiveChange="updateLocation"
+              :selectedValue="searchQuery"
+            />
+          </div>
+        </div>
       </div>
 
-      <div class="grid" v-if="!loading">
+      <div class="grid">
         <div class="col grid-equalHeight">
           <WeatherCard
             :location="location"
@@ -27,7 +40,7 @@
             :icon="currentWeather?.condition.icon"
           />
           <div class="col grid-column-equalHeight">
-            <div class="col align-items" v-if="weatherForNextHours">
+            <div class="col align-items h-scroll" v-if="weatherForNextHours">
               <template v-for="item in weatherForNextHours" :key="item.time">
                 <TimeForecast
                   :time="item.time"
@@ -36,7 +49,7 @@
                 />
               </template>
             </div>
-            <div class="col align-items" v-if="forecastDays">
+            <div class="col align-items" v-if="forecastDays && !isMobileView">
               <template v-for="item in forecastDays" :key="item.date_epoch">
                 <DayForecast
                   :date="item.date"
@@ -50,9 +63,9 @@
         </div>
       </div>
 
-      <div class="grid">
+      <div class="grid" v-if="isMobileView">
         <template v-for="item in forecastDays" :key="item.date_epoch">
-          <DayForecast
+          <MobileDayForecast
             :date="item.date"
             :icon="item.day.condition.icon"
             :condition="item.day.condition.text"
@@ -72,12 +85,22 @@ import FixedCountries from '@/components/FixedCountries.vue'
 import WeatherCard from '@/components/WeatherCard.vue'
 import TimeForecast from '@/components/TimeForecast.vue'
 import DayForecast from '@/components/DayForecast.vue'
+import MobileDayForecast from '@/components/MobileDayForecast.vue'
 import { cityWeekWeather } from '@/requests/apiClient'
 import type { WeatherData, ForecastDay, HourlyForecast, CurrentWeather } from '@/types/WeatherData'
 import { getWeatherForNextHours } from '@/utils/utils'
 import { prefixedCountries } from '@/constants/prefixed-countries'
 import LoaderCircle from '@/components/LoaderCircle.vue'
 import SearchInput from '@/components/SearchInput.vue'
+import { useWindowState } from '@/composables/useWindowState'
+
+const { isMobileView } = useWindowState()
+
+const showDropdown = ref(false)
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value
+}
 
 const weatherData = ref<WeatherData | undefined>()
 const location = ref<string | undefined>()
@@ -105,6 +128,7 @@ const fetchCityWeekWeather = async () => {
 }
 
 const updateLocation = (name: string) => {
+  showDropdown.value = false
   searchQuery.value = name
   fetchCityWeekWeather()
 }
@@ -120,6 +144,61 @@ onMounted(fetchCityWeekWeather)
 
 .prefixed-countries {
   display: flex;
-  flex-direction: row;
+  width: 100%;
+}
+
+.h-scroll {
+  overflow-x: auto;
+  gap: 10px;
+}
+
+.dropdown-container {
+  width: 100%;
+  display: flex;
+}
+
+.dropdown-button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 15px;
+  width: auto;
+  background-color: #989eaa;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-button:hover,
+.dropdown-button:focus {
+  background-color: #989eaa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+.dropdown-button:focus-visible {
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px #989eaa;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 1%;
+  left: 10%;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
 }
 </style>
