@@ -161,5 +161,17 @@ export const parseIcon = (code: string): string => {
 13 isolated-thunderstroms.svg
 14 thunderstroms.svg
 15 tornado.svg
-
  */
+
+export const getGreeting = (): string => {
+  const now = new Date()
+  const hour = now.getHours()
+
+  if (hour < 12) {
+    return 'Good morning'
+  } else if (hour >= 12 && hour < 18) {
+    return 'Good afternoon'
+  } else {
+    return 'Good night'
+  }
+}
