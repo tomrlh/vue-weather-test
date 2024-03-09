@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid container">
     <div class="col-12">
       <Header />
 
@@ -20,27 +20,31 @@
             />
             <div class="col grid-column-equalHeight">
               <div class="col align-items h-scroll" v-if="weatherForNextHours">
-                <template v-for="item in weatherForNextHours" :key="item.time">
-                  <TimeForecast
-                    :time="item.time"
-                    :icon="item.condition.icon"
-                    :temperature="item.temp_c"
-                  />
-                </template>
+                <TimeForecast
+                  v-for="item in weatherForNextHours"
+                  :key="item.time"
+                  :time="item.time"
+                  :icon="item.condition.icon"
+                  :temperature="item.temp_c"
+                />
               </div>
               <div class="col align-items" v-if="forecastDays && !isMobileView">
-                <template v-for="item in forecastDays" :key="item.date_epoch">
-                  <DayForecast :dayForecast="item" />
-                </template>
+                <DayForecast
+                  v-for="item in forecastDays"
+                  :key="item.date_epoch"
+                  :dayForecast="item"
+                />
               </div>
             </div>
           </div>
         </div>
 
-        <div class="grid" v-if="isMobileView">
-          <template v-for="item in forecastDays" :key="item.date_epoch">
-            <MobileDayForecast :dayForecast="item" />
-          </template>
+        <div class="grid container" v-if="isMobileView">
+          <MobileDayForecast
+            v-for="item in forecastDays"
+            :key="item.date_epoch"
+            :dayForecast="item"
+          />
         </div>
       </div>
 
@@ -98,6 +102,11 @@ onMounted(fetchCityWeekWeather)
 </script>
 
 <style scoped>
+.container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .align-items {
   display: flex;
   justify-content: space-between;
@@ -111,5 +120,6 @@ onMounted(fetchCityWeekWeather)
 .h-scroll {
   overflow-x: auto;
   gap: 10px;
+  margin-bottom: 20px;
 }
 </style>

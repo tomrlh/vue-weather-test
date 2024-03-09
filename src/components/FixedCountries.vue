@@ -39,6 +39,7 @@ const containerCSS = computed(() => {
   display: flex;
   width: auto;
   margin-right: 5px;
+  height: 20px;
 }
 
 .city {

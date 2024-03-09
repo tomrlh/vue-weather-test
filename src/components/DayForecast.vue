@@ -34,16 +34,15 @@ const bgColor = computed(() => getTemperatureColor(props.dayForecast.day.avgtemp
   justify-content: space-between;
   border-radius: 20px;
   padding: 20px;
-  width: 110px;
   height: 200px !important;
   margin-right: 10px;
   text-align: center;
-  max-width: 200px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.weather-icon img {
-  width: 50px;
+img {
+  width: 100px !important;
+  align-self: center;
 }
 
 .weather-information {
